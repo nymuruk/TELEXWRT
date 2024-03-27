@@ -1,13 +1,13 @@
 ### TELEGRAM BOT FOR OPENWRT
 
-* [**OWNER**](https://t.me/EdyDevz)
-
-##### TUTORIAL
+* [**OWNER DEV**](https://t.me/EdyDevz)
+* [**DECODE (saya)**](https://t.me/rickk1kch)
+* [**MODIFIED**](https://github.com/nymurbd)
+##### INDONESIAN VIDEO TUTORIAL
 * [**VIEW ON YOUTUBE**](https://youtu.be/4zhOv0Ke_Vs?si=B2qRDOyYifILzSur)
 
-
-### NOTE❗
-***TUTORIAL UDAH LENGKAP NJENG! GAUSAH BANYAK TANYA! BACA SAMPE KELAR BIAR PAHAM!!!***
+### NOTE ❗
+***THE TUTORIAL IS COMPLETE ALREADY! NO NEED TO ASK TOO MANY QUESTIONS! READ IT ALL TO UNDERSTAND!!!***
 
 ### REQUIREMENTS
 
@@ -23,7 +23,8 @@
 
 
 
-##### MANUAL INSTALL 😎
+##### MANUAL INSTALLATION 😎
+
 ```
 opkg update
 ```
@@ -69,28 +70,25 @@ git clone https://github.com/nymurbd/TELEXWRT
 ```
 mv /root/TELEXWRT/edy /etc/init.d/ && mv /root/TELEXWRT/edy.py /usr/bin/ && chmod +x /usr/bin/edy.py && chmod +x /etc/init.d/edy && rm -rf /root/TELEXWRT/plugins
 ```
-*
-*
+
 ##### AUTO INSTALLER 🚀
 
 ```
 opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/installer.sh && bash install)
 ```
-*
-*
+
 ##### EDIT AUTH ADMIN & BOT
 ```
 nano /root/TELEXWRT/AUTH
 ```
-*
-*
+
 ##### SCHEDULED TASKS
-**COPAS TO** `SCHEDULED TASK`
+**COPY TO** `SCHEDULED TASK`
 ```
 */30 * * * * service edy restart
 ```
-*
-*
+
+
 ##### ENABLE SERVICE ✅
 
 ```
@@ -114,8 +112,25 @@ service edy restart
 ```
 service edy stop
 ```
-*
-*
+
+#### BOT COMMANDS LIST 
+
+```
+system - View System Information  
+speedtest - Internet Speed Analysis  
+opkgupdate - Opkg Update  
+ping - Ping Server  
+clear - Clear Memory Usage  
+restart - Restart BOT  
+reboot - Reboot Server  
+shutdown - Shutdown Server  
+vssrstart - Start Shadowsocks  
+vrrsrestart - Restart shadowsocks  
+vssrstop - Stop Shadowsocks  
+shadowsocksrstart - START SSRP  
+shadowsocksrstop - STOP SSRP  
+shadowsocksrrestart - RESTART SSRP
+```
 
 ##### UNINSTALLER BOT 🗑️
 
@@ -123,8 +138,6 @@ service edy stop
 opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/uninstaller.sh && bash install)
 ```
 
-*
-*
 
 ## Commands
 
@@ -143,13 +156,13 @@ opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/
  * `/ocrestart` ***- Restart OpenClash 🟡***
  * `/ocstop` ***- Stop OpenClash 🔴***
 
-## CREDIT
+## CREDITS
 
-* **MBAH EDY ( DEV )**
-* **KARTOLO**
-* **SENTOLOP**
-* **BUJEL** ***( ADMIN GANTENG )***
-* **THANKS FOR ALL MEMBER IGH & TESTER**
+* **RICKK** [*REPO*](https://github.com/ahmadqsyaa/TELEXWRT) 👉 This repo is a modification of RICKK's repo.
 
-##### READ THIS ❗
-This is a script created and compiled by ***Leluhur Edy.*** use sensibly, do not edit or reupload to another groups. I can ***leak your data*** if you edit my script or sell it to other people.  remember that!! If there are any additions/confusion, you can pm me on Telegram!!!
+* **EDY DEVELOPER** Main Owner [*REPO*](https://github.com/EdyDevz/TgBotWRT)
+
+
+### READ THIS ❗
+
+***This repo is based on the work of ***[Mr. Rickk](https://github.com/ahmadqsyaa)*** and ***[Mr. Edy Developer](https://github.com/EdyDevz)***. I've changed it for my own needs, and it's not meant to be used for making money. Please don't use it for anything business-related.  If this repo isn't helpful for you, that's okay –  it's not my fault.***
