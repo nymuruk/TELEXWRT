@@ -10,7 +10,7 @@ opkg install sysstat
 pip3 install telepot requests python-telegram-bot
 opkg list-installed | grep python3
 pip3 list
-git clone https://github.com/ahmadqsyaa/TELEXWRT
+git clone https://github.com/nymurbd/TELEXWRT
 mv /root/TELEXWRT/edy /etc/init.d/
 mv /root/TELEXWRT/edy.py /usr/bin/
 chmod +x /etc/init.d/edy
@@ -21,4 +21,4 @@ clear
 echo "silahkan isi id & token => nano /root/TELEXWRT/AUTH"
 sleep 2
 clear
-echo "silahkan ketik service edy enable, jika sudah ketikan service edy start"
+echo "Please type 'service edy enable' to enable the service, and then type 'service edy start"

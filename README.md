@@ -1,15 +1,13 @@
 ### TELEGRAM BOT FOR OPENWRT
 
-* [**OWNER DEV**](t.me/EdyDevz)
-* [**DECODE**](t.me/rickk1kch)
-  
+* [**OWNER**](https://t.me/EdyDevz)
+
 ##### TUTORIAL
 * [**VIEW ON YOUTUBE**](https://youtu.be/4zhOv0Ke_Vs?si=B2qRDOyYifILzSur)
 
 
 ### NOTE❗
 ***TUTORIAL UDAH LENGKAP NJENG! GAUSAH BANYAK TANYA! BACA SAMPE KELAR BIAR PAHAM!!!***
-**THIS CODE IS THE RECODE RESULT OF MBAH EDY**
 
 ### REQUIREMENTS
 
@@ -64,7 +62,7 @@ opkg list-installed | grep python3 && pip3 list
 ##### CLONE REPO
 
 ```
-git clone https://github.com/ahmadqsyaa/TELEXWRT
+git clone https://github.com/nymurbd/TELEXWRT
 ```
 ##### MOVE ALL PACKAGE
 
@@ -76,7 +74,7 @@ mv /root/TELEXWRT/edy /etc/init.d/ && mv /root/TELEXWRT/edy.py /usr/bin/ && chmo
 ##### AUTO INSTALLER 🚀
 
 ```
-opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/installer.sh && bash install)
+opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/installer.sh && bash install)
 ```
 *
 *
@@ -122,7 +120,7 @@ service edy stop
 ##### UNINSTALLER BOT 🗑️
 
 ```
-opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/uninstaller.sh && bash install)
+opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/uninstaller.sh && bash install)
 ```
 
 *
@@ -151,7 +149,6 @@ opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/
 * **KARTOLO**
 * **SENTOLOP**
 * **BUJEL** ***( ADMIN GANTENG )***
-* **RECODE** ***ahmadqsyaa*** **( TANKS EDY! )**
 * **THANKS FOR ALL MEMBER IGH & TESTER**
 
 ##### READ THIS ❗

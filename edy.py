@@ -8,117 +8,57 @@ import hashlib
 import datetime
 import random
 
-# Membaca token dan chat ID admin dari berkas token.txt
+# Read token and admin ID from token.txt
 with open('/root/TELEXWRT/AUTH', 'r') as token_file:
     lines = token_file.readlines()
     if len(lines) >= 2:
         TOKEN = lines[0].strip()
         USER_ID = int(lines[1].strip())
     else:
-        print("Berkas token harus memiliki setidaknya 2 baris (token dan chat ID admin).")
+        print("Token file must have at least 2 lines (token and admin chat ID).")
         exit()
 
-# Daftar chat ID admin
+# List of admin chat IDs
 admins = set([USER_ID])
 
-# Lokasi file penanda (semaphore) untuk berhenti
+# Stop file path (semaphore)
 STOP_FILE_PATH = '/root/TELEXWRT/stop_bot.txt'
 
-# Lokasi file cmd
+# Command file path
 CMD_FILE_PATH = '/root/TELEXWRT/cmd'
 
-# URL untuk mengambil menu dari url/raw
-MENU_RAW_URL = 'https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/menu'  # Ganti dengan URL url/raw yang sesuai
+# URL to fetch menu from url/raw
+MENU_RAW_URL = 'https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/menu'  # Replace with your desired url/raw URL
 
-# Waktu interval untuk memeriksa perubahan cmd (dalam detik)
-RELOAD_INTERVAL = 600  # Ini akan memeriksa setiap 10 menit
+# Interval to check for cmd changes (in seconds)
+RELOAD_INTERVAL = 600  # This will check every 10 minutes
 
-# Hash md5 cmd saat ini
+# Current cmd file hash
 current_cmd_file_hash = None
 
-# Variabel global untuk waktu mulai bot
+# Global variable for bot start time
 bot_start_time = None
 
-# Daftar stiker untuk digunakan saat perintah salah
+# List of stickers for incorrect command responses
 sticker_list = [
-    "CAACAgUAAxkBAAEW4-xlIUDJVE25oao5Rtw0fIJ2-uOrMAAC7QkAAuBF8FQII1g3etFjfjAE",
-"CAACAgUAAxkBAAEW2ENlHTsiS2DPTkMFXB-F1s9kzq3kcwACcAsAAoxv6FQ95_qSd-r-GzA",
-"CAACAgUAAxkBAAEW2HllHUEVMHKty_SVDxwDOAABAROMf4cAAjcRAAKYG6FUR_jkhKs1gHMwBA",
-"CAACAgUAAxkBAAEW2I5lHUVOsAZBbWUoVnjEi1X94IofvwAC8QEAA4oRVoiCpxSZ_iw0MAQ",
-"CAACAgUAAxkBAAEW599lIzk6uAIZAbFVF7DfIQ584J0RrwACTggAAgEXGFbh6gL3kBr3QzAE",
-"CAACAgUAAxkBAAEW5-FlIznKEFp2_agAAVT_zSrwxMOREl4AAsEBAAL4iaUfQ6uHMvXhR_IwBA",
-"CAACAgUAAxkBAAEW5-NlIznglNx15YZr4BYzmIAJQDM2rQACJwwAAjDMQFVe0rz7ubar9jAE",
-"CAACAgUAAxkBAAEW5-VlIzoUokGQAzzKgaXibYYaxds_OQACqQEAAviJpR9t8d29tl3EvTAE",
-"CAACAgUAAxkBAAEW5-dlIzojifU2dGlFkSqlHmwe1PIq6AACqwEAAviJpR8qBRTatkgtuTAE",
-"CAACAgUAAxkBAAEW5-llIzpHcwS74U4Cn6LI6XaOCm22AAMFAgAC-ImlH_2J-IyC0oQMMAQ",
-"CAACAgUAAxkBAAEW5-tlIzpZtEGGyDBcW2Ol8X5CZoslFgAC1AQAAiV1YVUiWMi0oPW5nTAE",
-"CAACAgUAAxkBAAEW5-1lIzqQg3Gi1qymfxj4FEXHljKFmAACSQUAAqyDKVdaiQY72PXw1zAE",
-"CAACAgUAAxkBAAEW5-9lIzq41AfxEYeHH1H8rcbB0rpkMwAC-QQAAh6ywVTlF4EYQjEjpzAE",
-"CAACAgUAAxkBAAEW6AFlI2wtA6GJNAqlN7HLtRxQNQwXBAACggQAAi_2WFe4sTVdrI7XgzAE",
-"CAACAgUAAxkBAAEW6ANlI2yBZlOgxjLtbhMsXE6LUreG4gACcAMAAmx5qFRIrfOHelodnjAE",
-"CAACAgUAAxkBAAEW6AVlI2yYrIbDU5XXZVRDhBPz1L6xHwAC3gMAAloUaVcK_MsCmtGJETAE",
-"CAACAgUAAxkBAAEW6AllI2ypDf-U5YE6979p_xHB04P9VAACegMAAhrOqVVRL-nU6UlwszAE",
-"CAACAgUAAxkBAAEW0SllGsZ3AAEb2gYvvMi7YK5tsU6EKbgAAsEBAAL4iaUfQ6uHMvXhR_IwBA",
-"CAACAgUAAxkBAAEW6AtlI20HYlBodqEubzSOWkZYwUWFRwAC6AMAApBsYVU48uecLZi06DAE",
-"CAACAgUAAxkBAAEW6A1lI20gWc1bs2jEY8DZpcanpbgUDAACCgQAAhXj2VVcBETriJVYmjAE",
-"CAACAgUAAxkBAAEW6A9lI20zVsazNNoAAVPFHQEjEn1lgGgAAt4CAAJ7OOBV6IyTs9XfKU8wBA",
-"CAACAgUAAxkBAAEW6BFlI21LnAZPoRtv9KCwMyWplqcttAAC9gMAAnAusFf0-6bvVAABXggwBA",
-"CAACAgUAAxkBAAEW6BNlI21yBzHJh8Suc8dq5hPBL9tKLwACjAYAAiAMwFTRAqncN4ITZTAE",
-"CAACAgUAAxkBAAEW6BVlI22VvLyl0EO-VKi6K2yAflp_iwACmgEAAviJpR-TowPqDtMuqjAE",
-"CAACAgUAAxkBAAEW6BdlI22jqGVdVFcDsTT2vvm6CnM4IQACmwEAAviJpR_bPgF4D9RU1DAE",
-"CAACAgUAAxkBAAEW6BllI224Qd35DojLsvUFh1AWeBwsfgACrAEAAviJpR9gdnzDCCIrzTAE",
-"CAACAgUAAxkBAAEW6BtlI22_nmpZ0N9QMIqnpgpW3eBmfQACuAEAAviJpR9RTXVXQuq6kDAE",
-"CAACAgUAAxkBAAEW6B1lI23hyQGwhmR4ZTMy5-lYtVgy4AACvgEAAviJpR_MNaUi40x3-zAE",
-"CAACAgUAAxkBAAEW6CFlI24PwyS-_x73S6sNlQTyBQanxgAC5AEAAviJpR-trHE9Mr5JGjAE",
-"CAACAgUAAxkBAAEW6B9lI239xVfAQBW8pOUDfJuSyIj2ewACwgEAAviJpR8-W8f2aFTMkDAE",
-"CAACAgUAAxkBAAEW6CNlI25I1lfZL_JeFMPrfs-TKPh01gACLwQAAsIFwVUiRu7l4khu1zAE",
-"CAACAgUAAxkBAAEW6CdlI26PE5TGJaDZI_AUw3zkywVhGwAC7AADhT2oVYccpyKAQX5yMAQ",
-"CAACAgUAAxkBAAEW6CllI26erTTbUi4Z31SwuKE4TT3yHQACQQEAArJ7oFWHrZPOTbbSzTAE",
-"CAACAgUAAxkBAAEW6IllI4pH3Ke0pzXqtVbsGyaEhR9qZAACzgoAAjUCOFWBkcnyvUz_0jAE",
-"CAACAgUAAxkBAAEW6ItlI4pfJHU4r2wSmVwSt0CjoQY0fAACFgwAAq1rSFW08EAQA161HzAE",
-"CAACAgUAAxkBAAEW6JFlI4p73zwQsPPiQ7r9PXG1sy67HQAChQoAAq-DwFb0a4rNnWkCjjAE",
-"CAACAgUAAxkBAAEW6JNlI4qLX0FhxTd7OJf17PQrD0giVQACvQkAAkQIwVaCd3NacnFBpzAE",
-"CAACAgUAAxkBAAEW6JVlI4qXXtsWNEDO4nnw8syxxVRdMwAC4goAAmnvwFaXoFDNj4z7kDAE",
-"CAACAgUAAxkBAAEW6JdlI4q6MxTrLMzHE5DTbecPjVL8LwACJQsAAtwhyVa6eIPK7y1OIjAE",
-"CAACAgUAAxkBAAEW6JllI4rCPERT8b_eGtZLp9tbDUhUqAAC9wkAAmf-0Vay5CfjIeg7STAE",
-"CAACAgUAAxkBAAEW6KplI5Lzw5VMVLYyKArB0iVDhOtH_QACRgwAAqPlSFX5CocCwGM0yTAE",
-"CAACAgUAAxkBAAEW6K5lI5NKBb7wy5jZ2YvbAtbw2NwBywAChQoAAq-DwFb0a4rNnWkCjjAE",
-"CAACAgUAAxkBAAEW6LBlI5Nsgc64gdKj1b_wGE0pFYj7MQACMQsAArzHwVZozUTUoFbVlDAE",
-"CAACAgUAAxkBAAEW6LJlI5OqQQl6_SWZTDJOfh5D9eOIEgACGgMAAvI26VSOwLLLjYCI4jAE",
-"CAACAgUAAxkBAAEW6LRlI5O05sVp5q_RbRM0qD0Fw7eohwACvgMAAiUD4FQpt8xI_6X8-jAE",
-"CAACAgUAAxkBAAEW6LZlI5Pj8dABPOko0w24CqKFnIifpQAClwUAAjV90VXAWe6SFk_fTDAE",
-"CAACAgUAAxkBAAEW6LplI5QI-6ypbrH24FcH3eRqQlYG9gAC7gQAAm02EVZb6arCUH6tzDAE",
-"CAACAgUAAxkBAAEW6LxlI5QY1xZrdPMdtmaYHuLj2zYzoAAC3QQAAq2aEFbeyOV6ETr3oTAE",
-"CAACAgUAAxkBAAEW6L5lI5QwQLaNFR6tGkLIjmCoqSzQEQACJAUAAiSVEVYgb98SCXsTbjAE",
-"CAACAgUAAxkBAAEW6MBlI5RJkXScC7M1YRemqiaev1qfrgACYgQAAhjeEVYkGSdiLmvXMzAE",
-"CAACAgUAAxkBAAEW6MRlI5RhIjCjbbimyx2H88NAjyLCBgACoQcAAtcoIFXjQ96xfax1yjAE",
-"CAACAgUAAxkBAAEW6MhlI5SIGYziKRTNf4_fbMnFyP5sfgAChgQAAtNwGFY1Ki7kWk_gkjAE",
-"CAACAgUAAxkBAAEW6MplI5SdF1Z40RkuhPEMVWWXhpezegACngUAAk07EFYulqNTOIsFazAE",
-"CAACAgUAAxkBAAEW6M5lI5S_fwWKK0hWb0RDKrE3I4AbEwAChgEAAviJpR_8Cag8nT4mVDAE",
-"CAACAgUAAxkBAAEW6NBlI5TmSL0F28_KCjKpa3fB4os9AwACywEAAviJpR-QthEUulRkKDAE",
-"CAACAgUAAxkBAAEW6NRlI5UZ_gh9AAE2h2gPJjg72M7J9RkAAjwFAAJg5wFUQaMpwyK7X_gwBA",
-"CAACAgUAAxkBAAEW6NZlI5UoYOb_xwuIooudCr3snujhygACeAQAApX6gFTa5hH6e2Yu1DAE",
-"CAACAgUAAxkBAAEW6N1lI5VZ9wP1osXN-hShq-I0--Gg4gACNAUAAgH5UFZgW-avSdTA1zAE",
-"CAACAgUAAxkBAAEW6OFlI5V6vC_z_JKGK0qbeH2kvY3s0AACywQAApQVmVXWpEgMc9-zizAE",
-"CAACAgUAAxkBAAEW6ONlI5WJYaENjBMoKBAe6ljcTQo1JwACowQAAsyx8VURv2P5L-XVtDAE",
-"CAACAgUAAxkBAAEW6OVlI5WhmoyDCG41HCQmk3kUsxIUsAACJgcAAozD8VUybNuR84NvfDAE",
-"CAACAgUAAxkBAAEW6OllI5XF-oMgpAABqB0EEJ0E_r4txOsAAocEAAKxrPlV6Tunxz3Vp8kwBA",
-"CAACAgUAAxkBAAEW6OdlI5WvPS6gf3a-7WUPmX2MHveoygACwAQAAr8d8FXk_GoM0bJFITAE",
-"CAACAgUAAxkBAAEW6OtlI5XatMO5uimxxLQ5rT5xc06K9AACZAUAAntCMVZQ6i2NdvEFlDAE",
-"CAACAgUAAxkBAAEW6O1lI5XlPC6GQRDP_EdxehMDkxzeIgACHQUAAqT7KVfqwfMUfCXaTzAE",
-"CAACAgUAAxkBAAEW6O9lI5XxjWCb6b53Bowkc-V0wfTt_wACnwUAAjTqKFfN4aJMO-IP0jAE",
-"CAACAgUAAxkBAAEW6PFlI5YN1t0Yq_qBZqC22tzyqfM1xwACNgYAAqIQOVRgSXeikMmfzjAE",
-"CAACAgUAAxkBAAEW6PNlI5YzWaU5HDx4fUZAYdU671VnNwACBQQAAkHqkVTNg8QHhBeUpzAE",
-"CAACAgUAAxkBAAEW6PVlI5ZBSBW5T3WxAXkENAEgC2P49gACZwIAAoItGVQtri_aWbSUyDAE",
-"CAACAgUAAxkBAAEW6N9lI5VuCJlVasen8Qsdsr8P65nWXwACqAUAAgqOqFQz64P6hyiSqDAE",
-"CAACAgUAAxkBAAEW6NtlI5U52e7DSOwx7-k_c8avjmyJ2QACLwMAAhm5KVX5SB4NrDwojjAE",
-"CAACAgUAAxkBAAEW6MxlI5SpaYOYd_DT8RoAAa3DQKcsFqEAAtgFAALOuRhWS32EkIwS8LcwBA",
+   "CAACAgQAAxkBAAECMWNlu3bhZETf08EZKaC6mNV3jRL3_AAC0gsAAhb0sVHnZdkv2V_TgzQE",
+"CAACAgQAAxkBAAECMWdlu3bl1XLhl098fpNAPws459muHgACmBAAAneDeVN5LZnXk3f79DQE",
+"CAACAgQAAxkBAAECMWtlu3bo-2xYZjxynMB2g2CPgXgBKgACqgoAAnZr4FMPUGZeiWkAAcQ0BA",
+"CAACAgQAAxkBAAECMW9lu3bx2BDQbzLCCJ0HDoWlvuQbrwACTAsAAv5ZsFF2q1VvBT3vvzQE",
+"CAACAgQAAxkBAAECMXNlu3gDgU9A7rzNiZHHyuSCkkGoiAACBQwAAj8y8FFu9A81FIT5TzQE",
+"CAACAgQAAxkBAAECMXdlu3gVaQVcIrStAsE7J8KV4RBWlwAC0AsAAmCiMFCyj6GosflqdTQE",
+"CAACAgEAAxkBAAECMXtlu3jybCLsU6twJ83LRytWCniGJQACqgMAAlEpDTnfi2Gpd_RM2DQE",
+"CAACAgEAAxkBAAECMX9lu3kCdw4uCRTwugEirsyw75u4qwACTAIAAlEpDTmW-Nn5uUz4NDQE",
+"CAACAgQAAxkBAAECMYdlu3k6M2JxPFcnGMI2JxaS0o1QhQACqhEAAvLjMFOVLZ-ZSUQkBzQE",
+"CAACAgQAAxkBAAECMYtlu3lARqJsNvc6QN2oCN-r2qO8GQACyQkAAv0J6VBpFSz2Lfm2-jQE",
+"CAACAgQAAxkBAAECMY9lu3lFgOoo-wmL0WWaMgQ0GlCWUAACnBIAAqbxcR6Xl8vipkImWDQE",
+"CAACAgQAAxkBAAECMZNlu3oOWycqPGDSm8y38w-Ev8wAAZQAAt0IAAKOfCFQwPyGuUwYDqo0BA",
 ]
 
-# Set untuk melacak stiker yang sudah dikirim
+# Set to track sent stickers
 sent_stickers = set()
 
-# Fungsi untuk menjalankan perintah di terminal tanpa menampilkan output
+# Function to execute commands in terminal without displaying output
 def run_command(command):
     try:
         subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -126,7 +66,7 @@ def run_command(command):
     except subprocess.CalledProcessError as e:
         return False
 
-# Fungsi untuk membaca berkas teks alias
+# Function to read alias text file
 def load_aliases(file_path):
     aliases = {}
     try:
@@ -140,12 +80,12 @@ def load_aliases(file_path):
         print(f"Error loading aliases: {str(e)}")
     return aliases
 
-# Fungsi untuk menghapus pesan setelah waktu tertentu
+# Function to delete message after a certain time
 def delete_message_after(USER_ID, message_id, seconds):
     time.sleep(seconds)
     bot.deleteMessage((USER_ID, message_id))
 
-# Fungsi untuk mengirim pesan menu dari url
+# Function to send menu message from URL
 def send_menu_from_url(USER_ID):
     try:
         response = requests.get(MENU_RAW_URL)
@@ -153,35 +93,32 @@ def send_menu_from_url(USER_ID):
             menu_text = response.text
             bot.sendMessage(USER_ID, menu_text, parse_mode="Markdown")
         else:
-            bot.sendMessage(USER_ID, "Gagal mengambil menu dari url.")
+            bot.sendMessage(USER_ID, "Failed to fetch menu from URL.")
     except Exception as e:
-        print(f"Error sending menu from url: {str(e)}")
+        print(f"Error sending menu from URL: {str(e)}")
 
-# Fungsi untuk mengirim stiker jika perintah salah
+# Function to send a random sticker if command is incorrect
 def send_random_sticker(USER_ID):
-    # Pilih stiker acak yang belum pernah dikirim
     while True:
         sticker_to_send = random.choice(sticker_list)
         if sticker_to_send not in sent_stickers:
             sent_stickers.add(sticker_to_send)
             break
-
     bot.sendSticker(USER_ID, sticker_to_send)
 
-# Fungsi untuk menangani perintah /menu
+# Function to handle /menu command
 def handle_start(msg):
     USER_ID = msg['chat']['id']
     send_menu_from_url(USER_ID)
 
-# Fungsi untuk menangani pesan yang diterima dari bot Telegram
+# Function to handle messages received from Telegram bot
 def handle(msg):
     USER_ID = msg['chat']['id']
     user_id = msg['from']['id']
-
-    # Memeriksa apakah pesan memiliki teks
+    
     if 'text' in msg:
         command = msg['text']
-
+        
         if command == '/menu':
             handle_start(msg)
         elif user_id in admins:
@@ -189,49 +126,38 @@ def handle(msg):
                 parts = command.split(' ', 1)
                 if len(parts) == 2:
                     cmd_to_run = parts[1]
-                    # Mengirim pesan "Please wait" saat perintah dikenali
                     wait_message = bot.sendMessage(USER_ID, "Please wait...")
-                    # Menjalankan perintah yang diberikan
                     if run_command(cmd_to_run):
-                        # Jika perintah berhasil dijalankan, hapus pesan "Please wait..."
                         bot.deleteMessage((USER_ID, wait_message['message_id']))
                     else:
-                        # Jika perintah gagal, beri pesan "Perintah salah atau gagal dijalankan."
                         send_random_sticker(USER_ID)
-                        bot.sendMessage(USER_ID, "Perintah salah atau gagal dijalankan.")
-                        # Hapus pesan "Perintah salah atau gagal dijalankan." setelah 5 detik
+                        bot.sendMessage(USER_ID, "Command is incorrect or failed to execute.")
                         t = threading.Thread(target=delete_message_after, args=(USER_ID, msg['message_id'], 5))
                         t.start()
                 else:
                     send_random_sticker(USER_ID)
-                    bot.sendMessage(USER_ID, "The /cmd command format is incorrect.  Use: /cmd <command>")
+                    bot.sendMessage(USER_ID, "The /cmd command format is incorrect. Use: /cmd <command>")
             else:
                 if command in aliases:
-                    # Mengirim pesan "Please wait" saat perintah dikenali
                     wait_message = bot.sendMessage(USER_ID, "Please wait...")
-                    # Menjalankan perintah sesuai dengan alias yang ditemukan
                     if run_command(aliases[command]):
-                        # Jika perintah berhasil dijalankan, hapus pesan "Please wait..."
                         bot.deleteMessage((USER_ID, wait_message['message_id']))
                     else:
-                        # Jika perintah gagal, beri pesan "Wrong Command, Use /menu To Check"
                         send_random_sticker(USER_ID)
                         bot.sendMessage(USER_ID, "Wrong Command, Use /menu To Check")
-                        # Hapus pesan "Wrong Command, Use /menu To Check" setelah 5 detik
                         t = threading.Thread(target=delete_message_after, args=(USER_ID, msg['message_id'], 5))
                         t.start()
                 else:
-                    # Menampilkan pesan "Wrong Command, Use /menu To Check"
                     send_random_sticker(USER_ID)
                     bot.sendMessage(USER_ID, "Wrong Command, Use /menu To Check")
         else:
             send_random_sticker(USER_ID)
-            bot.sendMessage(USER_ID, "Anda bukan golongan yang diizinkan.")
+            bot.sendMessage(USER_ID, "You are not authorized.")
     else:
         send_random_sticker(USER_ID)
         bot.sendMessage(USER_ID, "Wrong Command, Use /menu To Check")
 
-# Fungsi untuk memeriksa koneksi internet
+# Function to check internet connection
 def check_internet_connection():
     try:
         response = requests.get('https://www.google.com', timeout=10)
@@ -239,7 +165,7 @@ def check_internet_connection():
     except (requests.ConnectionError, requests.Timeout):
         return False
 
-# Fungsi untuk memuat ulang file cmd jika berubah
+# Function to reload cmd file if changed
 def reload_cmd_file():
     global current_cmd_file_hash
     new_cmd_file_hash = get_file_md5_hash(CMD_FILE_PATH)
@@ -247,7 +173,7 @@ def reload_cmd_file():
         current_cmd_file_hash = new_cmd_file_hash
         aliases = load_aliases(CMD_FILE_PATH)
 
-# Fungsi untuk menghitung hash MD5 dari sebuah berkas
+# Function to calculate MD5 hash of a file
 def get_file_md5_hash(file_path):
     hash_md5 = hashlib.md5()
     with open(file_path, "rb") as file:
@@ -255,37 +181,33 @@ def get_file_md5_hash(file_path):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
-# Inisialisasi bot Telegram
+# Initialize Telegram bot
 bot = telepot.Bot(TOKEN)
 bot.message_loop(handle)
 
-# Mendapatkan daftar alias dari berkas teks
+# Get list of aliases from text file
 aliases = load_aliases(CMD_FILE_PATH)
 current_cmd_file_hash = get_file_md5_hash(CMD_FILE_PATH)
 
-# Set waktu mulai bot saat ini
+# Set bot start time
 bot_start_time = datetime.datetime.now()
 
-print('Bot sedang berjalan. Untuk berhenti, gunakan perintah /stopbot.')
+print('Bot is running. To stop, use the /stopbot command.')
 
-# Biarkan bot berjalan terus selama file penanda tidak ada
+# Let the bot run continuously until stop file is present
 while not os.path.exists(STOP_FILE_PATH):
     try:
-        # Cek koneksi internet
         if check_internet_connection():
-            # Tempatkan logika bot Anda di sini
             pass
         else:
-            print('Tidak ada koneksi internet. Menunggu...')
-            time.sleep(60)  # Menunggu 1 menit sebelum mencoba lagi
-        # Cek dan muat ulang cmd jika perlu
+            print('No internet connection. Waiting...')
+            time.sleep(60)
         if time.time() % RELOAD_INTERVAL == 0:
             reload_cmd_file()
     except Exception as e:
-        print(f"Terjadi kesalahan: {str(e)}")
-        # Tambahkan logika untuk menunggu sebelum mencoba lagi
-        time.sleep(60)  # Menunggu 1 menit sebelum mencoba lagi
+        print(f"Error occurred: {str(e)}")
+        time.sleep(60)
 
-# Bot berhenti jika file penanda ada
-print('Bot berhenti.')
+print('Bot stopped.')
+
 

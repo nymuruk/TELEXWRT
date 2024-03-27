@@ -1,28 +1,35 @@
 #!/bin/bash
 
-# Asosiasi antara judul dan URL
+# Association between titles and URLs
 declare -A SCRIPTS
-SCRIPTS["system"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/system.sh"
-SCRIPTS["speedtest"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/speedtest.sh"
-SCRIPTS["ping"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/ping.sh"
-SCRIPTS["vnstat"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/vnstat.sh"
-SCRIPTS["restart"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/restart.sh"
-SCRIPTS["reboot"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/reboot.sh"
-SCRIPTS["shutdown"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/shutdown.sh"
-SCRIPTS["ocstart"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/ocstart.sh"
-SCRIPTS["ocrestart"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/ocrestart.sh"
-SCRIPTS["ocstop"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/ocstop.sh"
-SCRIPTS["clear"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/clear.sh"
-SCRIPTS["opkgupdate"]="https://raw.githubusercontent.com/ahmadqsyaa/TELEXWRT/main/plugins/tools/menu/opkgupdate.sh"
-# Tambahkan judul dan URL lain sesuai kebutuhan
+SCRIPTS["system"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/system.sh"
+SCRIPTS["vnstat"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/vnstat.sh"
+SCRIPTS["speedtest"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/speedtest.sh"
+SCRIPTS["ping"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/ping.sh"
+SCRIPTS["vnstat"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/vnstat.sh"
+SCRIPTS["restart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/restart.sh"
+SCRIPTS["reboot"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/reboot.sh"
+SCRIPTS["shutdown"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/shutdown.sh"
+SCRIPTS["vssrstart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/vssrstart.sh"
+SCRIPTS["vssrstop"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/vssrstop.sh"
+SCRIPTS["vssrrestart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/vssrrestart.sh"
+SCRIPTS["shadowsocksrstart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/shadowsocksrstart.sh"
+SCRIPTS["shadowsocksrstop"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/shadowsocksrstop.sh"
+SCRIPTS["shadowsocksrrestart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/shadowsocksrrestart.sh"
+SCRIPTS["ocstart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/ocstart.sh"
+SCRIPTS["ocrestart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/ocrestart.sh"
+SCRIPTS["ocstop"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/ocstop.sh"
+SCRIPTS["clear"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/clear.sh"
+SCRIPTS["opkgupdate"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/opkgupdate.sh"
+# Add other titles and URLs as needed
 
-# Memeriksa apakah argumen yang diberikan adalah judul yang valid
+# Check if the given argument is a valid title
 if [ "$#" -ne 1 ] || [ -z "${SCRIPTS[$1]}" ]; then
-    echo "Penggunaan: bash s.sh [judul script]"
-    exit 1
+  echo "Usage: bash s.sh [script title]"
+  exit 1
 fi
 
-# Mengunduh dan menjalankan skrip dari URL yang sesuai dengan judul
+# Download and run the script from the URL corresponding to the title
 selected_url="${SCRIPTS[$1]}"
 script=$(curl -s "$selected_url" | tr -d '\r')
 bash -c "$script"
