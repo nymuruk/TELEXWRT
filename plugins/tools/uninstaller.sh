@@ -13,4 +13,4 @@ echo "UNINSTALLING TOOLS....."
 sleep 10
 clear
 echo "[+] UNINSTALLING TOOLS SUCCESSFULLY ✓"
-echo "[+] THAKS FOR USING THIS TOOLS :)"
+echo "[+] THANKS FOR USING THIS TOOLS :) "
