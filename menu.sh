@@ -21,6 +21,9 @@ SCRIPTS["ocrestart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Ban
 SCRIPTS["ocstop"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/menu/ocstop.sh"
 SCRIPTS["clear"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/menu/clear.sh"
 SCRIPTS["opkgupdate"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/menu/opkgupdate.sh"
+SCRIPTS["bdixstart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/menu/bdixstart.sh"
+SCRIPTS["bdixstop"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/menu/bdixstop.sh"
+SCRIPTS["bdixrestart"]="https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/menu/bdixrestart.sh"
 # Add other titles and URLs as needed
 
 # Check if the given argument is a valid title
