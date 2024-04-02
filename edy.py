@@ -28,7 +28,7 @@ STOP_FILE_PATH = '/root/TELEXWRT/stop_bot.txt'
 CMD_FILE_PATH = '/root/TELEXWRT/cmd'
 
 # URL to fetch menu from url/raw
-MENU_RAW_URL = 'https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/menu/menu'  # Replace with your desired url/raw URL
+MENU_RAW_URL = 'https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/menu/menu'  # Replace with your desired url/raw URL
 
 # Interval to check for cmd changes (in seconds)
 RELOAD_INTERVAL = 600  # This will check every 10 minutes
@@ -53,6 +53,18 @@ sticker_list = [
 "CAACAgQAAxkBAAECMYtlu3lARqJsNvc6QN2oCN-r2qO8GQACyQkAAv0J6VBpFSz2Lfm2-jQE",
 "CAACAgQAAxkBAAECMY9lu3lFgOoo-wmL0WWaMgQ0GlCWUAACnBIAAqbxcR6Xl8vipkImWDQE",
 "CAACAgQAAxkBAAECMZNlu3oOWycqPGDSm8y38w-Ev8wAAZQAAt0IAAKOfCFQwPyGuUwYDqo0BA",
+"CAACAgUAAxkBAAECP4JmDDstlsr-dNQg53ePxMCb1pndTQACjQIAAhYOsVegKSbq3r0_7zQE",
+"CAACAgUAAxkBAAECP4ZmDDt1y8uHEeyjGR_Ny-tExh98SAACigIAAifscVa8Sf00F632ozQE",
+"CAACAgUAAxkBAAECP4pmDDuefn_gFznpmS8Qp4qHzwtiPwAC1gEAAmo6aFYDcfuP8VqMTjQE",
+"CAACAgUAAxkBAAECP45mDDu0ZePUXkgasmmctJUlnXSZKwAC9QMAAnGmGFbXhyG3I0b4izQE",
+"CAACAgUAAxkBAAECP5JmDDwKpDSVyN4JlbOgDcTN890beQACIAMAAkJomVUEVeo593KsFTQE",
+"CAACAgEAAxkBAAECP5ZmDDxPkpsmIctUXsDWCthtRpmKcgACEAIAAl3vYURg-9G2IuwbpjQE",
+"CAACAgUAAxkBAAECP5pmDDyV13hcbDMBpoGew0W6Xx_7bQACnwMAAidquVQ4U7etBVicVzQE",
+"CAACAgUAAxkBAAECP55mDDy2TXkhh_jgE7MX7oi91wu4mwACtQUAAiA2iVS8q9dLxvUy0DQE",
+"CAACAgUAAxkBAAECP6JmDDzzewIyigFcs5LiPl1lhpUvvQACzwgAAuxI-FR-8HpqQ2wwUjQE",
+"CAACAgUAAxkBAAECP6ZmDD1fw_TSfreLv7w37VvJI2pxvgACdwUAAqwdeVex7uMJZScLWTQE",
+"CAACAgUAAxkBAAECP6pmDD3L-ZD7lvT381PIBGQY3q5XxgACkgIAAvfhuFSLZMJea3Lc7zQE",
+"CAACAgIAAxkBAAECP65mDD4BBPlAMs0ViV2PxeZyIS_YTwAC-hAAAqHHKEg5ZXbrk1gHozQE",
 ]
 
 # Set to track sent stickers
