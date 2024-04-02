@@ -1,8 +1,9 @@
-### TELEGRAM BOT FOR OPENWRT
+### TELEGRAM BOT FOR OPENWRT [**FOR GOLOBAL REPO**](URL)
 
 * [**OWNER DEV**](https://t.me/EdyDevz)
-* [**DECODE (saya)**](https://t.me/rickk1kch)
-* [**MODIFIED**](https://github.com/nymurbd)
+* [**DECODE (RICK)**](https://t.me/rickk1kch)
+* [**MODIFIED (NYMUR)**](https://github.com/nymurbd)
+* [**SPECIAL THANKS (LiKH0N)**](https://github.com/LiKH0N)
 ##### INDONESIAN VIDEO TUTORIAL
 * [**VIEW ON YOUTUBE**](https://youtu.be/4zhOv0Ke_Vs?si=B2qRDOyYifILzSur)
 
@@ -63,7 +64,7 @@ opkg list-installed | grep python3 && pip3 list
 ##### CLONE REPO
 
 ```
-git clone https://github.com/nymurbd/TELEXWRT
+git clone -b For-Bangladesh https://github.com/nymurbd/TELEXWRT
 ```
 ##### MOVE ALL PACKAGE
 
@@ -74,7 +75,7 @@ mv /root/TELEXWRT/edy /etc/init.d/ && mv /root/TELEXWRT/edy.py /usr/bin/ && chmo
 ##### AUTO INSTALLER 🚀
 
 ```
-opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/installer.sh && bash install)
+opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/installer.sh && bash install)
 ```
 
 ##### EDIT AUTH ADMIN & BOT
@@ -124,9 +125,9 @@ clear - Clear Memory Usage
 restart - Restart BOT  
 reboot - Reboot Server  
 shutdown - Shutdown Server  
-vssrstart - Start Shadowsocks  
-vrrsrestart - Restart shadowsocks  
-vssrstop - Stop Shadowsocks  
+bdixstart - Start Bdix  
+bdixrestart - Restart Bdix
+bdixstop - Stop Bdix
 shadowsocksrstart - START SSRP  
 shadowsocksrstop - STOP SSRP  
 shadowsocksrrestart - RESTART SSRP
@@ -135,7 +136,7 @@ shadowsocksrrestart - RESTART SSRP
 ##### UNINSTALLER BOT 🗑️
 
 ```
-opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/nymurbd/TELEXWRT/main/plugins/tools/uninstaller.sh && bash install)
+opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/nymurbd/TELEXWRT/For-Bangladesh/plugins/tools/uninstaller.sh && bash install)
 ```
 
 
@@ -152,9 +153,9 @@ opkg update && (cd /tmp && curl -sLko install https://raw.githubusercontent.com/
  * `/restart` ***- Restart BOT 🤖***
  * `/reboot` ***- Reboot STB ♻️***
  * `/shutdown` ***- Shutdown Server 📴***
- * `/ocstart` ***- Start OpenClash 🟢***
- * `/ocrestart` ***- Restart OpenClash 🟡***
- * `/ocstop` ***- Stop OpenClash 🔴***
+ * `/dixstart` ***- Start BDIX 🟢***
+ * `/bdixrestart` ***- Restart BDIX 🟡***
+ * `/bdixstop` ***- Stop BDIX 🔴***
 
 ## CREDITS
 
