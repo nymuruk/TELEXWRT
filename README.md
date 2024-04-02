@@ -90,6 +90,7 @@ nano /root/TELEXWRT/AUTH
 ```
 
 
+
 ##### ENABLE SERVICE ✅
 
 ```
@@ -113,6 +114,10 @@ service edy restart
 ```
 service edy stop
 ```
+
+### How to setup BDIX proxy ? 👉 [**BDIX PROXY SETUP REPO**](https://github.com/emonbhuiyan/BDIX-OpenWRT)
+* [**VIEW ON YOUTUBE**](https://youtu.be/4zhOv0Ke_Vs?si=B2qRDOyYifILzSur)      👉  [**OWNER**](https://www.facebook.com/emoncontact) 🖤
+
 
 #### BOT COMMANDS LIST 
 
