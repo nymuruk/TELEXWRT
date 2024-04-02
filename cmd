@@ -3,12 +3,6 @@
 # Speedtest
 /speedtest: bash /root/TELEXWRT/menu.sh speedtest
 
-# Vnstar
-/vnstat: bash /root/TELEXWRT/menu.sh vnstat
-
-# Opkg Update
-/opkgupdate: bash /root/TELEXWRT/opkgupdate.sh opkgupdate
-
 # Clear
 /clear: bash /root/TELEXWRT/menu.sh clear
 
@@ -27,10 +21,10 @@
 # Restart
 /restart: bash /root/TELEXWRT/menu.sh restart
 
-# Vssr
-/vssrstart: bash /root/TELEXWRT/menu.sh vssrstart
-/vssrstop: bash /root/TELEXWRT/menu.sh vssrstop
-/vssrrestart: bash /root/TELEXWRT/menu.sh vssrrestart
+# Bdix
+/bdixstart: bash /root/TELEXWRT/menu.sh bdixstart
+/bdixstop: bash /root/TELEXWRT/menu.sh bdixstop
+/bdixrestart: bash /root/TELEXWRT/menu.sh bdixrestart
 
 # ShadowsocksR
 /shadowsocksrstart: bash /root/TELEXWRT/menu.sh shadowsocksrstart
